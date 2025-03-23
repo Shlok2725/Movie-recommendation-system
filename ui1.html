@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <style>
+        /* Similar to previous styles but with slight adjustments for better UX */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #141414;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #141414;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+        .movie-card {
+            background-color: #333;
+            width: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .movie-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #e50914;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .input-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .input-section input {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Movie Recommendation System</h1>
+    </header>
+
+    <div id="recommended-movies" class="movie-list">
+        <!-- Recommended movies will be displayed here -->
+    </div>
+
+    <script>
+        // Fetch popular movies from the backend
+        async function getPopularMovies() {
+            const response = await fetch('/movies/popular');
+            const data = await response.json();
+            const movies = data.results;
+            displayMovies(movies, "recommended-movies");
+        }
+
+        // Display movie cards
+        function displayMovies(movies, elementId) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = ""; // Clear previous content
+
+            movies.forEach(movie => {
+                const movieCard = document.createElement('div');
+                movieCard.classList.add('movie-card');
+                movieCard.innerHTML = `
+                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+                    <p>${movie.title}</p>
+                `;
+                container.appendChild(movieCard);
+            });
+        }
+
+        // Initialize by fetching popular movies
+        getPopularMovies();
+    </script>
+</body>
+</html>
