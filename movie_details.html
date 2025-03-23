@@ -1,0 +1,72 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }} - Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #141414;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .movie-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .movie-header img {
+            width: 300px;
+            border-radius: 10px;
+        }
+        .movie-info {
+            max-width: 600px;
+        }
+        .genres {
+            color: #e50914;
+            font-weight: bold;
+        }
+        .reviews {
+            margin-top: 20px;
+        }
+        .review {
+            background: #222;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ movie.title }}</h1>
+        <div class="movie-header">
+            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+            <div class="movie-info">
+                <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+                <p><strong>Genres:</strong> <span class="genres">{{ ", ".join(movie.genres) }}</span></p>
+                <p><strong>Cast:</strong> {{ ", ".join(movie.cast) }}</p>
+                <p><strong>Summary:</strong> {{ movie.overview }}</p>
+            </div>
+        </div>
+
+        <div class="reviews">
+            <h2>Reviews</h2>
+            {% for review in movie.reviews %}
+                <div class="review">{{ review }}</div>
+            {% else %}
+                <p>No reviews available.</p>
+            {% endfor %}
+        </div>
+
+        <a href="/recommendations" style="color: white;">← Back to Movies</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }} - Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #141414;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+        }
+        .movie-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .movie-header img {
+            width: 300px;
+            border-radius: 10px;
+        }
+        .movie-info {
+            flex: 1;
+            min-width: 280px;
+        }
+        .genres {
+            color: #e50914;
+            font-weight: bold;
+        }
+        .reviews, .related-movies {
+            margin-top: 20px;
+        }
+        .review {
+            background: #333;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #e50914;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .back-button:hover {
+            background-color: #b20710;
+        }
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .movie-card {
+            background-color: #333;
+            width: 150px;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+        .movie-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .movie-card a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            margin-top: 5px;
+        }
+        @media (max-width: 768px) {
+            .movie-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .movie-header img {
+                width: 80%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ movie.title }}</h1>
+        <div class="movie-header">
+            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+            <div class="movie-info">
+                <p><strong>Release Date:</strong> {{ movie.release_date or "N/A" }}</p>
+                <p><strong>Genres:</strong> <span class="genres">{{ ", ".join(movie.genres) if movie.genres else "N/A" }}</span></p>
+                <p><strong>Cast:</strong> {{ ", ".join(movie.cast) if movie.cast else "N/A" }}</p>
+                <p><strong>Rating:</strong> ⭐ {{ movie.vote_average or "N/A" }}/10</p>
+                <p><strong>Popularity:</strong> {{ movie.popularity or "N/A" }}</p>
+                <p><strong>Summary:</strong> {{ movie.overview or "No summary available." }}</p>
+            </div>
+        </div>
+
+        <div class="reviews">
+            <h2>Reviews</h2>
+            {% if movie.reviews %}
+                {% for review in movie.reviews %}
+                    <div class="review">"{{ review }}"</div>
+                {% endfor %}
+            {% else %}
+                <p>No reviews available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Related Movies Section -->
+        <div class="related-movies">
+            <h2>Related Movies</h2>
+            <div class="movie-list">
+                {% if related_movies %}
+                    {% for related in related_movies %}
+                        <div class="movie-card">
+                            <a href="/movie/{{ related.id }}">
+                                <img src="https://image.tmdb.org/t/p/w500{{ related.poster_path }}" alt="{{ related.title }}">
+                                <p>{{ related.title }}</p>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No related movies found.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <a href="/recommendations" class="back-button">← Back to Movies</a>
+    </div>
+</body>
+</html>
